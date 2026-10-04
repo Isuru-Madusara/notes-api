@@ -121,7 +121,7 @@ jobs:
             ("docker pull " + $img),
             "docker rm -f notes || true",
             ("docker run -d --name notes --restart unless-stopped -p 80:8000 " + $img),
-            "curl --fail --silent --retry 5 --retry-delay 2 --retry-connrefused http://127.0.0.1/health",
+                        "ok=0; for i in $(seq 1 20); do if curl --fail --silent http://127.0.0.1/health; then ok=1; break; fi; sleep 2; done; [ $ok = 1 ] || { docker logs notes; exit 1; }",
             "docker image prune -f"
           ]}')
 
