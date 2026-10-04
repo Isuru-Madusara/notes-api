@@ -26,3 +26,9 @@ variable "github_repo_sub" {
   type        = string
   default     = "Isuru-Madusara@157903563/notes-api@1404548243"
 }
+
+variable "state_bucket" {
+  description = "S3 bucket that stores Terraform state"
+  type        = string
+  default     = "notes-api-tfstate-248262247864"
+}

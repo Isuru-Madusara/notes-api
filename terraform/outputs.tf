@@ -21,3 +21,11 @@ output "github_actions_role_arn" {
   description = "Role ARN used by GitHub Actions"
   value       = aws_iam_role.github_actions.arn
 }
+
+output "tf_plan_role_arn" {
+  value = aws_iam_role.tf_plan.arn
+}
+
+output "tf_apply_role_arn" {
+  value = aws_iam_role.tf_apply.arn
+}
