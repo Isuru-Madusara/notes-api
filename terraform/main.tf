@@ -25,5 +25,6 @@ resource "aws_ecr_repository" "notes_api" {
     Owner     = "isuru"
     Project   = "notes-api"
     ManagedBy = "terraform"
+    Purpose   = "learning"
   }
 }
