@@ -20,3 +20,9 @@ variable "github_repo" {
   type        = string
   default     = "Isuru-Madusara/notes-api"
 }
+
+variable "github_repo_sub" {
+  description = "Repo as it appears in the GitHub OIDC subject claim (name@id form)"
+  type        = string
+  default     = "Isuru-Madusara@157903563/notes-api@1404548243"
+}
