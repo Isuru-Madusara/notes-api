@@ -9,3 +9,14 @@ variable "repository_name" {
   type        = string
   default     = "notes-api"
 }
+
+variable "instance_type" {
+  description = "EC2 instance size"
+  type        = string
+  default     = "t3.micro"
+}
+variable "github_repo" {
+  description = "GitHub repository allowed to assume the deploy role (owner/name)"
+  type        = string
+  default     = "Isuru-Madusara/notes-api"
+}
