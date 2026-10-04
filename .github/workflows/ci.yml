@@ -48,9 +48,28 @@ jobs:
         with:
           context: .
           push: false
+          load: true
           tags: notes-api:ci
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Trivy report (HIGH and CRITICAL, informational)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: notes-api:ci
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "0"
+
+      - name: Trivy gate (fail on CRITICAL)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: notes-api:ci
+          format: table
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
 
   push-to-ecr:
     runs-on: ubuntu-latest
@@ -120,8 +139,8 @@ jobs:
             ("aws ecr get-login-password --region " + $region + " | docker login --username AWS --password-stdin " + $reg),
             ("docker pull " + $img),
             "docker rm -f notes || true",
-            ("docker run -d --name notes --restart unless-stopped -p 80:8000 " + $img),
-                        "ok=0; for i in $(seq 1 20); do if curl --fail --silent http://127.0.0.1/health; then ok=1; break; fi; sleep 2; done; [ $ok = 1 ] || { docker logs notes; exit 1; }",
+            ("docker run -d --name notes --restart unless-stopped -p 80:8000 --log-driver awslogs --log-opt awslogs-region=" + $region + " --log-opt awslogs-group=/notes-api/app " + $img),
+            "ok=0; for i in $(seq 1 20); do if curl --fail --silent http://127.0.0.1/health; then ok=1; break; fi; sleep 2; done; [ $ok = 1 ] || { docker logs notes; exit 1; }",
             "docker image prune -f"
           ]}')
 

@@ -29,3 +29,6 @@ output "tf_plan_role_arn" {
 output "tf_apply_role_arn" {
   value = aws_iam_role.tf_apply.arn
 }
+output "log_group_name" {
+  value = aws_cloudwatch_log_group.app.name
+}
